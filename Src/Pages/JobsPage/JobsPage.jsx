@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -10,6 +11,8 @@ import {
 import httpRequest from "../../Network/httpRequest";
 import Loading from "../../Components/Loading/Loading";
 import ErrorComponent from "../../Components/ErrorComponent/ErrorComponent";
+import JobCard from "../../Components/JobCard/JobCard";
+import { useNavigation } from "@react-navigation/native";
 
 const ExperienceLevel = [
   {
@@ -38,11 +41,12 @@ const ExperienceLevel = [
   },
 ];
 
-const JobsPage = () => {
+const JobsPage = (props) => {
   const [jobData, setJobData] = useState([]);
   const [level, setLevel] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { navigation } = props;
 
   useEffect(() => {
     setLoading(true);
@@ -58,19 +62,19 @@ const JobsPage = () => {
       });
   }, [level]);
 
-  console.log(jobData);
   if (loading) return <Loading />;
   if (error) return <ErrorComponent />;
 
+  const onSelect = (item) => {
+    navigation.navigate("jobs Details", { jobId: item.id, title: item.name });
+  };
+
   const renderData = ({ item }) => (
-    <View>
-      <Text>{item.name}</Text>
-      {/* Include other relevant data here */}
-    </View>
+    <JobCard data={item} onSelect={() => onSelect(item)} />
   );
 
   return (
-    <View>
+    <View style={styles.main_container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {ExperienceLevel.map((item) => (
           <TouchableOpacity
@@ -83,6 +87,7 @@ const JobsPage = () => {
         ))}
       </ScrollView>
       <FlatList
+        style={styles.flat_list}
         data={jobData}
         renderItem={renderData}
         keyExtractor={(item) => item.id.toString()}
@@ -92,16 +97,20 @@ const JobsPage = () => {
 };
 
 const styles = StyleSheet.create({
+  main_container: {
+    flex: 1,
+  },
   filter_container: {
     alignContent: "center",
     justifyContent: "center",
     width: 200,
     height: 50,
-
     backgroundColor: "#e0e0e0",
     borderColor: "black",
     borderWidth: 1,
     marginHorizontal: 3,
+    flex: 1,
+    marginVertical: 5,
   },
   filter_box: {
     textAlign: "center",

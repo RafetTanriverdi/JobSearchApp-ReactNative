@@ -10,36 +10,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Jobs = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="jobsstack"
-        component={JobsPage}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen name="jobs Details " component={JobsDetails} />
-    </Stack.Navigator>
-  );
-};
-const Favorite = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="favoritestack"
-        component={FavoritePage}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen name="favorite Details" component={FavoriteDetails} />
-    </Stack.Navigator>
-  );
-};
 
-const Routing = () => {
+
+const DrawerRouting = () => {
   return (
     <Drawer.Navigator
       screenOptions={({ navigation }) => ({
@@ -56,9 +29,24 @@ const Routing = () => {
         },
       })}
     >
-      <Drawer.Screen name="Jobs" component={Jobs} />
-      <Drawer.Screen name="Favorite" component={Favorite} />
+      <Drawer.Screen name="Jobs" component={JobsPage} />
+      <Drawer.Screen name="Favorite" component={FavoritePage} />
     </Drawer.Navigator>
+  );
+};
+const Routing = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="jobs"
+        component={DrawerRouting}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name="jobs Details" component={JobsDetails}   options={({ route }) => ({ title: route.params.title })} />
+      <Stack.Screen name="favorite Details" component={FavoriteDetails} />
+    </Stack.Navigator>
   );
 };
 

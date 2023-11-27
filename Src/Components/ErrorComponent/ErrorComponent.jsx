@@ -1,6 +1,6 @@
-import AnimatedLottieView from "lottie-react-native";
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, View } from "react-native";
+import LottieView from "lottie-react-native";
 
 const ErrorComponent = () => {
   const errorAnimation = useRef(null);
@@ -14,7 +14,7 @@ const ErrorComponent = () => {
 
   return (
     <View style={styles.animationContainer}>
-      <AnimatedLottieView
+      <LottieView
         autoPlay
         ref={errorAnimation}
         style={{
